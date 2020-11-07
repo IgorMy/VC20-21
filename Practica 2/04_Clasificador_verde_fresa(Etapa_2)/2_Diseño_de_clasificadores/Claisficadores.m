@@ -7,7 +7,7 @@ load("./Datos/MuestrasColoresVerde");
 %% Adicción del directorio de funciones e Imagenes
 addpath('Funciones','Imagenes');
 
-%% Enttrenamiento kNN
+%% Enttrenamiento kNN 
 
 %KNN
 k = 5;

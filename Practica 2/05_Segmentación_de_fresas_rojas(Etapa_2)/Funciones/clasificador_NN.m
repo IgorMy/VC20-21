@@ -9,7 +9,7 @@ function Ib=clasificador_NN(net,Ir,espacioCcas)
     for j=1:M
         input_temp=[];
         for i=1:size(espacioCcas,2)
-            input_temp = [input_temp atributos{1,i}(:,j)];
+            input_temp = [input_temp atributos{1,espacioCcas(i)}(:,j)];
         end
         input = [input;input_temp];
     end
