@@ -13,9 +13,26 @@ Y(Ib) = 1;
 Ib = Ib == 0;
 Y(Ib) = 0;
 
+nombreClases{1} = 'Resto';
+nombreClases{2} = 'Verde Fresa';
+
+simbolosClases{1} = '.k';
+simbolosClases{2} = '.g';
+
+nombresProblema.clases = nombreClases;
+nombresProblema.simbolos = simbolosClases;
 
 %% Seleccionar el conjuntos de 3 descriptores que proporcione mayor separabilidad.
 [D S] = funcion_selecciona_vector_ccas(X,Y,3);
+
+%% Representacion del espacio
+Cadena = "[";
+for j=1:3
+    Cadena = Cadena + " " + nombresProblema.descriptores{D(j)}; 
+end
+Cadena = Cadena + " ] - Separabilidad: " + S;
+
+funcion_representa_datos(X,Y,D,nombresProblema,Cadena);
 
 %% Guardamos los datos
 

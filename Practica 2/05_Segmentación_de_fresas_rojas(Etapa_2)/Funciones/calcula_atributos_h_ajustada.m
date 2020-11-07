@@ -1,4 +1,4 @@
-function [VC VCN]=calcula_atributos(I)
+function [VC VCN]=calcula_atributos_h_ajustada(I)
 
     % Imagen en double
     Id = double(I);
@@ -40,6 +40,17 @@ function [VC VCN]=calcula_atributos(I)
     an = mat2gray(a,[-128 127]);
     bn = mat2gray(b,[-128 127]);
     
+    % Corregimos H
+    for i=1:size(H,1)
+        for j=1:size(H,2)
+            if H(i,j) <= 0.5
+                H(i,j) = 1 - 2 * H(i,j);
+            else
+               H(i,j) = 2 * (H(i,j) - 0.5);
+            end
+            Hn(i,j) = H(i,j);
+        end
+    end
     VC = {R,G,B,H,S,I_HSI,Y,U,V,L,a,b};
     VCN = {Rn,Gn,Bn,Hn,Sn,In,Yn,Un,Vn,Ln,an,bn};
 end

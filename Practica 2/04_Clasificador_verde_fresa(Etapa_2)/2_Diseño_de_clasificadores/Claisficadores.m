@@ -1,9 +1,9 @@
-%% Limpieza inicial
+ %% Limpieza inicial
 restoredefaultpath,clear, clc, close all;
 
 %% Carga de datos
 load("./Datos/MuestrasColoresVerde");
-
+ 
 %% Adicción del directorio de funciones e Imagenes
 addpath('Funciones','Imagenes');
 
@@ -35,9 +35,18 @@ for i=1:Ni
     % Reescalamos las imagenes
     IbKNNR = round(imresize(IbKNN,[N M],'nearest'));
     % Visualización del contenido
-    VisualizaColores(I,IbKNNR),title("Clasificador KNN");
+    VisualizaColores(I,IbKNNR),title("Clasificador KNN - " + Cadena);
     pause;
     % Medida de rendimiento
     [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbKNNR, IG);
     Rendimiento{1,i} = [Sens; Esp; Prec; FalsosPositivos];
 end
+
+% Rendimiento en la primera imagen
+Rendimiento{1}
+
+% Rendimiento en la segunda imagen
+Rendimiento{2}
+
+% Media
+(Rendimiento{1} + Rendimiento{2})./2

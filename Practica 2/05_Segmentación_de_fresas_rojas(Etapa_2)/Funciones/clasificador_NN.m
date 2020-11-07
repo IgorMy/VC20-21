@@ -1,4 +1,4 @@
-function Ib=clasificador_KNN_SVM(knn,Ir,espacioCcas)
+function Ib=clasificador_NN(net,Ir,espacioCcas)
     % Obtenemos los atributos de la imagen
     [~,atributos] = calcula_atributos_h_ajustada(Ir);
     
@@ -9,18 +9,18 @@ function Ib=clasificador_KNN_SVM(knn,Ir,espacioCcas)
     for j=1:M
         input_temp=[];
         for i=1:size(espacioCcas,2)
-            input_temp = [input_temp atributos{1,espacioCcas(i)}(:,j)];
+            input_temp = [input_temp atributos{1,i}(:,j)];
         end
         input = [input;input_temp];
     end
     
     % Generamos la respuesta
-    R = predict(knn,input);
+    R = sim(net,input');
     
     % Generamos la Ib
     ind = 1;
     for j=1:M
-      Ib(:,j) = R(ind:ind+N-1); 
+      Ib(:,j) = R(ind:ind+N-1);  
       ind = ind + N;
     end
 end

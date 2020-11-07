@@ -18,10 +18,10 @@ function [VC VCN]=calcula_atributos_h_ajustada(I)
     B = Id(:,:,3);
     H = HSV(:,:,1);
     S = HSV(:,:,2);
-    I = (Id(:,:,1) + Id(:,:,2) + Id(:,:,3))/3;
-    Y = 0.299*Id(:,:,1) + 0.587*Id(:,:,2) + 0.114*Id(:,:,3);
-    U = 0.492*(Id(:,:,3)- Y);
-    V = 0.877*(Id(:,:,1) - Y);
+    I_HSI = (R + G +B)./3;
+    Y = 0.299*Idn(:,:,1) + 0.587*Idn(:,:,2) + 0.114*Idn(:,:,3);
+    U = 0.492*(Idn(:,:,3)- Y);
+    V = 0.877*(Idn(:,:,1) - Y);
     L = Lab(:,:,1);
     a = Lab(:,:,2);
     b = Lab(:,:,3);
@@ -32,25 +32,25 @@ function [VC VCN]=calcula_atributos_h_ajustada(I)
     Bn = Idn(:,:,3);
     Hn = HSV(:,:,1);
     Sn = HSV(:,:,2);
-    In = (Idn(:,:,1) + Idn(:,:,2) + Idn(:,:,3))/3;
-    Yn = 0.299*Idn(:,:,1) + 0.587*Idn(:,:,2) + 0.114*Idn(:,:,3);
-    Un = 0.492*(Idn(:,:,3)- Y);
-    Vn = 0.877*(Idn(:,:,1) - Y);
-    Ln = mat2gray(Lab(:,:,1),[0 100]);
-    an = mat2gray(Lab(:,:,2),[-128 127]);
-    bn = mat2gray(Lab(:,:,3),[-128 127]);
+    In = (Rn + Gn + Bn)./3;
+    Yn = Y;
+    Un = mat2gray(U, [-0.436 0.436]);
+    Vn = mat2gray(V, [-0.615 0.615]);
+    Ln = L./100;
+    an = mat2gray(a,[-128 127]);
+    bn = mat2gray(b,[-128 127]);
     
     % Corregimos H
     for i=1:size(H,1)
         for j=1:size(H,2)
             if H(i,j) <= 0.5
-                H(i,j) = 1 - 2 * H(i,j); 
+                H(i,j) = 1 - 2 * H(i,j);
             else
                H(i,j) = 2 * (H(i,j) - 0.5);
             end
             Hn(i,j) = H(i,j);
         end
     end
-    VC = {R,G,B,H,S,I,Y,U,V,L,a,b};
+    VC = {R,G,B,H,S,I_HSI,Y,U,V,L,a,b};
     VCN = {Rn,Gn,Bn,Hn,Sn,In,Yn,Un,Vn,Ln,an,bn};
 end

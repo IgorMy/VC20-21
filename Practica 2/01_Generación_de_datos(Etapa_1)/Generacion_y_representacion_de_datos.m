@@ -27,7 +27,7 @@ for i=1:N
     Im = imread(["Color"+i+"_MuestraColores.tif"]);
     
     % Obtención de las muestras de color
-    [VC VCN] = calcula_atributos(I);
+    [VC, VCN] = calcula_atributos(I);
     
     % Almacenamiento de los datos de interés
     for j=1:length(CC)
@@ -81,9 +81,13 @@ for i=1:size(ValoresColores,1)
     if ValoresColores(i,4) <= 0.5
         hr = 1 - 2 * ValoresColores(i,4);
         ValoresColores(i,4) = hr;
+        hr = 1 - 2 * ValoresColoresNormalizados(i,4);
+        ValoresColoresNormalizados(i,4) = hr;
     else
         hr = 2 * (ValoresColores(i,4)-0.5);
         ValoresColores(i,4) = hr;
+        hr = 2 * (ValoresColoresNormalizados(i,4)-0.5);
+        ValoresColoresNormalizados(i,4) = hr;
     end
 end
 

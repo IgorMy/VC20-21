@@ -7,46 +7,42 @@ load("./Datos/MuestrasColoresRojoRefinadas");
 %% Adicción del directorio de funciones e Imagenes
 addpath('Funciones','Imagenes');
 
-%% Entrenamiento Mahalanobis
+%% Selección del espacio de caracteristicas a trabajar
+ec = 2; % RGB(1), Lab(2), Mejores tres(3), Mejores cuatro(4);
 
-DM = cell(4,2); % 1º columna {Centro, u1,u2,u3,u4} , 2º columna {Matriz covarianzas}
-
-for i=1:size(DesSep,1)
-    [DM{i,1}, DM{i,2}] = Mahalanobis( X(:,DesSep{i,1}), Y);
+% Descriptores
+Cadena = "[";
+for j=1:3
+    Cadena = Cadena + " " + nombresProblema.descriptores{DesSep{ec,1}(j)}; 
 end
+Cadena = Cadena+ " ]";
 
-%% Entrenamiento NN
+%% Entrenamiento
+% Mahalanobis
+DM = cell(1,2);
+[DM{1}, DM{2}] = Mahalanobis( X(:,DesSep{ec,1}), Y);
 
-DRN = cell(4,1);
+% Entrenamiento NN
+net = patternnet;
+net = configure(net, X(:,DesSep{ec,1})',Y');
+% net = newff(X(:,DesSep{ec,1})', Y',5);
+net = train(net,X(:,DesSep{ec,1})', Y');
 
-for i=1:size(DesSep,1)
-    DRN{i} = newff(X(:,DesSep{i,1})', Y',5);
-    DRN{i} = train(DRN{i},X(:,DesSep{i,1})', Y');
-end
-close all;
-
-%% Enttrenamiento kNN y SVM
-
-%KNN
+% KNN
 k = 5;
-DKNN = cell(4,1);
-for i=1:size(DesSep,1)
-    DKNN{i} = fitcknn(X(:,DesSep{i,1}), Y,'NumNeighbors',k);
-end
+DKNN = fitcknn(X(:,DesSep{ec,1}), Y,'NumNeighbors',k);
 
 % SVM
-DSVM = cell(4,1);
-for i=1:size(DesSep,1)
-    DSVM{i} = fitcsvm(X(:,DesSep{i,1}), Y);
-    DSVM{i} = compact(DSVM{i});
-end
+DSVM = fitcsvm(X(:,DesSep{ec,1}), Y);
+DSVM = compact(DSVM);
 
 %% Prueba de funcionamiento
 
 % Numero de imagenes
 Ni = 2;
 
-Rendimiento = cell(2,4);
+Rendimiento_total = cell(Ni);
+Rendimiento = zeros(4,7);
 for i=1:Ni
     
     % Carga de imagenes
@@ -57,75 +53,66 @@ for i=1:Ni
     Ir = imresize(I,0.5);
 
     [N,M,~] = size(I);
-
-    % Aplicamos tecnicas de clasificación
     
-    % Espacio CCAS
-    for j=1:size(DesSep,1)
-        R_t = zeros(4,7);
-        % Mahalanobis
-        for h=1:4
-            IbM = clasificador_mahalanobis(DM{j,1},DM{j,2},h,Ir,DesSep{j,1});
-            % Re-escalado de la imagen
-            IbMR = round(imresize(IbM,[N M],'nearest'));
-            % Visualización del contenido
-            VisualizaColores(I,IbMR),title("Clasificador Mahalanobis");
-            pause;
-            [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbMR, IG);
-            R_t(:,h) = [Sens; Esp; Prec; FalsosPositivos];
-        end
-        
-        % NN
-        IbNN = clasificador_NN(DRN{j},Ir,DesSep{j,1});
-        % Reescalamos las imagenes
-        IbNNR = round(imresize(IbNN,[N M],'nearest'));
+    % Mahalanobis
+    for h=1:4 % h es el umbral
+        IbM = clasificador_mahalanobis(DM{1},DM{2},h,Ir,DesSep{ec,1});
+        % Re-escalado de la imagen
+        IbMR = round(imresize(IbM,[N M],'nearest'));
         % Visualización del contenido
-        VisualizaColores(I,IbNNR),title("Clasificador NN");
+        VisualizaColores(I,IbMR),title("Clasificador Mahalanobis - " + Cadena + " - umbral: "+DM{1}(1,size(DesSep{ec,1},2)+h));
         pause;
-        % Medida de rendimiento
-        [Sens Esp Prec FalsosPositivos] = funcion_metricas(IbNNR, IG);
-        h = h + 1;
-        [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbNNR, IG);
-        R_t(:,h) = [Sens; Esp; Prec; FalsosPositivos];
-        % knn
-        IbKNN = clasificador_KNN_SVM(DKNN{j},Ir,DesSep{j,1});
-        % Reescalamos las imagenes
-        IbKNNR = round(imresize(IbKNN,[N M],'nearest'));
-        % Visualización del contenido
-        VisualizaColores(I,IbKNNR),title("Clasificador KNN");
-        pause;
-        % Medida de rendimiento
-        h = h + 1;
-        [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbKNNR, IG);
-        R_t(:,h) = [Sens; Esp; Prec; FalsosPositivos];
-        
-        % SVM
-        IbSVM = clasificador_KNN_SVM(DSVM{j},Ir,DesSep{j,1});
-        % Reescalamos las imagenes
-        IbSVMR = round(imresize(IbSVM,[N M],'nearest'));
-        % Visualización del contenido
-        VisualizaColores(I,IbSVMR),title("Clasificador SVM");
-        pause
-        % Medida de rendimiento
-        h = h + 1;
-        [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbSVMR, IG);
-        R_t(:,h) = [Sens; Esp; Prec; FalsosPositivos];
-        Rendimiento{i,j} = R_t;
+        [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbMR, IG);
+        Rendimiento(:,h) = [Sens; Esp; Prec; FalsosPositivos];
     end
+        
+    % NN
+    IbNN = clasificador_NN(net,Ir,DesSep{ec,1});
+    % Reescalamos las imagenes
+    IbNNR = round(imresize(IbNN,[N M],'nearest'));
+    % Visualización del contenido
+    VisualizaColores(I,IbNNR),title("Clasificador NN - "+Cadena);
+    pause;
+    % Medida de rendimiento
+    [Sens Esp Prec FalsosPositivos] = funcion_metricas(IbNNR, IG);
+    h = h + 1;
+    [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbNNR, IG);
+    Rendimiento(:,h) = [Sens; Esp; Prec; FalsosPositivos];
+        
+    % knn
+    IbKNN = clasificador_KNN_SVM(DKNN,Ir,DesSep{ec,1});
+    % Reescalamos las imagenes
+    IbKNNR = round(imresize(IbKNN,[N M],'nearest'));
+    % Visualización del contenido
+    VisualizaColores(I,IbKNNR),title("Clasificador KNN - "+Cadena);
+    pause;
+    % Medida de rendimiento
+    h = h + 1;
+    [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbKNNR, IG);
+    Rendimiento(:,h) = [Sens; Esp; Prec; FalsosPositivos];
+        
+    % SVM
+    IbSVM = clasificador_KNN_SVM(DSVM,Ir,DesSep{ec,1});
+    % Reescalamos las imagenes
+    IbSVMR = round(imresize(IbSVM,[N M],'nearest'));
+    % Visualización del contenido
+    VisualizaColores(I,IbSVMR),title("Clasificador SVM - "+Cadena);
+    pause
+    % Medida de rendimiento
+    h = h + 1;
+    [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbSVMR, IG);
+    Rendimiento(:,h) = [Sens; Esp; Prec; FalsosPositivos];
+    Rendimiento_total{i} = Rendimiento;
 end
 
-% Para cerrar todas las ventanas
+% Cerramos todas las ventanas
 close all;
 
-% Visualizamos la salida media
-Rs = zeros(4,7);
-for i=1:2
-    for j=1:4
-        Rs =Rs + Rendimiento{i,j}; 
-    end
-end
-Rs = Rs./8;
-Rs
-% Se observan mejores resultado en general en Mahalanobis con el 2º umbral
-% (Distancia Mahalanobis seleccionada para excluir el 3% de los puntos rojo
-%  fresa más alejado del centroide de la nube de puntos. )
+% Rendimiento en la primera imagen
+Rendimiento_total{1}
+
+% Rendimiento en la segunda imagen
+Rendimiento_total{2}
+
+% Media
+(Rendimiento_total{1} + Rendimiento_total{2})./2 % Se observa que el mejor clasificador es el SVM
