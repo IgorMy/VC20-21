@@ -22,19 +22,11 @@ function [datos mCovInteres] = Mahalanobis(X,Y)
       end
       
       % Separamos las matrices de covarianzas para un mejor uso
-      mCovResto = mCov(:,:,1);
       mCovInteres = mCov(:,:,2);
       
       % Calculamos las distancias mahalanobis 
       distancias_interes = [];
       distancias_resto=[];
-      
-      mCov1 = mCov(:,:,1);
-      mCov2 = mCov(:,:,2);
-    
-      numDatosClase1 = sum(Y==valoresClases(1));
-      numDatosClase2 = sum(Y==valoresClases(2));
-      mCov = (numDatosClase1*mCov1 + numDatosClase2*mCov2) / (numDatosClase1 + numDatosClase2); 
       
       for i=1:numDatos
             if Y(i) == 0

@@ -27,6 +27,11 @@ Y = [ones(size(R_f_fin,1),1);zeros(size(Resto(:,1),1),1)];
 
 X = [R_f_fin;Resto];
 
+% Actualizamos la separabilidad
+for i=1:4
+    DesSep{i,2} = indiceJ(X(:,DesSep{i,1})',Y');
+end
+
 % Representación de los tres primeros espacios de ccas
 for i=1:3
     Cadena = "[";

@@ -25,6 +25,9 @@ nombresProblema.simbolos = simbolosClases;
 %% Seleccionar el conjuntos de 3 descriptores que proporcione mayor separabilidad.
 [D S] = funcion_selecciona_vector_ccas(X,Y,3);
 
+% Para optimizar
+load("Datos/DS.mat");
+
 %% Representacion del espacio
 Cadena = "[";
 for j=1:3

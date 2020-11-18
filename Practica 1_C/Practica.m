@@ -2,7 +2,7 @@
 restoredefaultpath,clear, clc, close all;
 
 %% Adicción del directorio de las imágenes
-addpath("Imagenes");
+addpath("Imagenes","Funciones");
 
 %% Paso 0: Utiliza la función de matlab roipoly para generar, a partir de la imagen facilitada 
 % P1b.jpg, una nueva imagen que contenga únicamente la información central contenida en el
@@ -73,3 +73,8 @@ B = mean(ICmenor(:));
 Ic = double(ICmenor - B).^2;
 CICmenor= sqrt( sum(ICmenor(:))/(M*N) );
 
+
+
+%Funcion Im filter
+mascara = [1 1 1; 1 5 1; 1 1 1];
+Is = imfilter(I,mascara);

@@ -22,20 +22,7 @@ simbolosClases{2} = '.r';
 nombresProblema.clases = nombreClases;
 nombresProblema.simbolos = simbolosClases;
 
-%% Representación de datos
-% RGB
-funcion_representa_datos(X,Y,[1 2 3],nombresProblema,"RGB");
-
-% HS
-funcion_representa_datos(X,Y,[4 5],nombresProblema,"HS");
-
-% UV
-funcion_representa_datos(X,Y,[8 9],nombresProblema,"UV");
-
-% ab
-funcion_representa_datos(X,Y,[11 12],nombresProblema,"ab");
-
-%% Cuantificacón de la separabilidad de los espacio RGB, HSI, YUV, Lab mediante CSM
+%% Cuantificacón de la separabilidad de los espacio RGB, HSI, YUV y Lab
 
 separabilidad = [];
 
@@ -43,14 +30,28 @@ for i=1:4
     if i == 1
         h = 1;
     else
-        h=(i-1)*3;
+        h=(i-1)*3+1;
     end  
     separabilidad =[separabilidad; indiceJ(X(:,h:i*3)',Y')];
+    
 end
+
+%% Representación de datos
+% RGB
+funcion_representa_datos(X,Y,[1 2 3],nombresProblema,"RGB - "+separabilidad(1));
+
+% HSI
+funcion_representa_datos(X,Y,[4 5 6],nombresProblema,"HSI - "+separabilidad(2));
+
+% YUV
+funcion_representa_datos(X,Y,[7 8 9],nombresProblema,"YUV - "+separabilidad(3));
+
+% Lab
+funcion_representa_datos(X,Y,[10 11 12],nombresProblema,"Lab - "+separabilidad(4));
 
 disp("    RGB       HSI       YUV       Lab");
 disp(separabilidad');
-% Observamos que la separabilidad en general no es muy buena
+% Observamos que la separabilidad de las muestras es bastante parecida
 
 %% Seleccionar los conjuntos de 3, 4, 5 y 6 descriptores que proporcionan mayor separabilidad.
 DSCal = cell(4,2);
@@ -59,6 +60,9 @@ for i=3:6
     DSCal(i-2,1) = {D};
     DSCal(i-2,2) = {S};
 end
+
+% Para optimizar se ha calculado previamente
+load("Datos/DSCal.mat");
 
 % Representación de 3 dimensiones
     Cadena = "[";

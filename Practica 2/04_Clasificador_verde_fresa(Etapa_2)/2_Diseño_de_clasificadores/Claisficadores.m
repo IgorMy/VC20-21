@@ -35,7 +35,7 @@ for i=1:Ni
     % Reescalamos las imagenes
     IbKNNR = round(imresize(IbKNN,[N M],'nearest'));
     % Visualización del contenido
-    VisualizaColores(I,IbKNNR),title("Clasificador KNN - " + Cadena);
+    VisualizaColores(I,IbKNNR),title("Clasificador KNN");
     pause;
     % Medida de rendimiento
     [Sens, Esp, Prec, FalsosPositivos] = funcion_metricas(IbKNNR, IG);

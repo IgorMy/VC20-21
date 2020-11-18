@@ -81,14 +81,11 @@ for i=1:size(ValoresColores,1)
     if ValoresColores(i,4) <= 0.5
         hr = 1 - 2 * ValoresColores(i,4);
         ValoresColores(i,4) = hr;
-        hr = 1 - 2 * ValoresColoresNormalizados(i,4);
-        ValoresColoresNormalizados(i,4) = hr;
     else
         hr = 2 * (ValoresColores(i,4)-0.5);
         ValoresColores(i,4) = hr;
-        hr = 2 * (ValoresColoresNormalizados(i,4)-0.5);
-        ValoresColoresNormalizados(i,4) = hr;
     end
+    ValoresColoresNormalizados(i,4) = ValoresColores(i,4);
 end
 
 %% Segunda representación del espacio HS

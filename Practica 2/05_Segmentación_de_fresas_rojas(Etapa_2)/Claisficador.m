@@ -13,7 +13,7 @@ load("./Datos/MuestrasColoresRojoRefinadas");
 %% Adicción del directorio de funciones e Imagenes
 addpath('Funciones','Imagenes');
 
-%% Enttrenamiento kNN Verde fresa
+%% Enttrenamiento Verde fresa
 
 % Mahalanobis
 DMV = cell(1,2);
@@ -85,10 +85,10 @@ for i=1:Ni
     %IbR = clasificador_NN(netR,Ir,DesSep{ec,1});
     
     % KNN
-    %IbR = clasificador_KNN_SVM(DKNNR,Ir,DesSep{ec,1});
+    IbR = clasificador_KNN_SVM(DKNNR,Ir,DesSep{ec,1});
     
     % SVM
-    IbR = clasificador_KNN_SVM(DSVMR,Ir,DesSep{ec,1});
+    %IbR = clasificador_KNN_SVM(DSVMR,Ir,DesSep{ec,1});
     
     % Reescalamos las imagenes
     IbRR = round(imresize(IbR,[N M],'nearest'));
@@ -102,10 +102,10 @@ for i=1:Ni
     %IbV = clasificador_NN(netV,Ir,D);
     
     % KNN
-    %IbV = clasificador_KNN_SVM(DKNNV,Ir,D);
+    IbV = clasificador_KNN_SVM(DKNNV,Ir,D);
     
     % SVM
-    IbV = clasificador_KNN_SVM(DSVMV,Ir,D);
+    %IbV = clasificador_KNN_SVM(DSVMV,Ir,D);
     
     % Reescalamos las imagenes
     IbVR = round(imresize(IbV,[N M],'nearest'));

@@ -8,7 +8,7 @@ load("./Datos/MuestrasColoresRojoRefinadas");
 addpath('Funciones','Imagenes');
 
 %% Selección del espacio de caracteristicas a trabajar
-ec = 2; % RGB(1), Lab(2), Mejores tres(3), Mejores cuatro(4);
+ec = 1; % RGB(1), Lab(2), Mejores tres(3), Mejores cuatro(4);
 
 % Descriptores
 Cadena = "[";
@@ -105,9 +105,6 @@ for i=1:Ni
     Rendimiento_total{i} = Rendimiento;
 end
 
-% Cerramos todas las ventanas
-close all;
-
 % Rendimiento en la primera imagen
 Rendimiento_total{1}
 
@@ -115,4 +112,4 @@ Rendimiento_total{1}
 Rendimiento_total{2}
 
 % Media
-(Rendimiento_total{1} + Rendimiento_total{2})./2 % Se observa que el mejor clasificador es el SVM
+(Rendimiento_total{1} + Rendimiento_total{2})./Ni % Se observa que el mejor clasificador es el KNN
