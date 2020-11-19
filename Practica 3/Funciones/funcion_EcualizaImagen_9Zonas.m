@@ -8,6 +8,14 @@ function Ieq = funcion_EcualizaImagen_9Zonas(I)
             ffin = TamZona(1)*i;
             cini = TamZona(2)*(j-1) + 1;
             cfin = TamZona(2)*j;
+            if i==3
+                ffin = M;
+            end
+            
+            if j==3
+                cfin = N;
+            end
+            
             Zona = I( fini:ffin,cini:cfin );
             
             Zeq = funcion_EcualizaImagen(Zona);
