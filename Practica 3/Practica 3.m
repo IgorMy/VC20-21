@@ -294,4 +294,57 @@ hold off;
 % Ademas, cabe destacar, que la ecualización local por bloque 5x5 tarda menos y
 % ofrece un mejor contraste frente a la de pixel a pixel.
 
+%% 3. Tercera parte
+clear, clc;
+
+% 13. Utilizando como histogramas de referencia los correspondientes a las 
+% componentes roja, verde y azul de la imagen ColorPatron.tif, aplicar la 
+% función de transformación proporcionada por la función de matlab histeq 
+% para uniformizar el color de las imágenes Color1.tif, Color2.tif, 
+% Color3.tif y Color4.tif. Únicamente debe considerarse la información de 
+% los píxeles de la retina.
+
+% Lectura de imagen
+I = imread("ColorPatron.bmp");
+C1 = imread("Color1.bmp");
+C2 = imread("Color2.bmp");
+C3 = imread("Color3.bmp");
+C4 = imread("Color4.bmp");
+
+Ih1 = funcion_ajusta_histograma(I,C1);
+Ih2 = funcion_ajusta_histograma(I,C2);
+Ih3 = funcion_ajusta_histograma(I,C3);
+Ih4 = funcion_ajusta_histograma(I,C4);
+
+figure, hold on
+subplot(2,5,1),imshow(I),title("Patron");
+subplot(2,5,2),imshow(Ih1),"Color1";
+subplot(2,5,3),imshow(Ih2),"Color2";
+subplot(2,5,4),imshow(Ih3),"Color3";
+subplot(2,5,5),imshow(Ih4),"Color4";
+subplot(2,5,6),imhist(I);
+subplot(2,5,7),imhist(Ih1);
+subplot(2,5,8),imhist(Ih2);
+subplot(2,5,9),imhist(Ih3);
+subplot(2,5,10),imhist(Ih4);
+hold off;
+
+% 14. Representar en una misma gráfica los histogramas de los canales rojo,
+% verde y azul de la imagen patrón. Hacer lo mismo para las imágenes 
+% originales de entrada al proceso y para las de salida que han sido 
+% especificadas.
+
+figure, hold on
+subplot(1,5,1),funcion_representa_histograma_por_color(I),title("Patron");
+subplot(1,5,2),funcion_representa_histograma_por_color(Ih1),title("Color1");
+subplot(1,5,3),funcion_representa_histograma_por_color(Ih2),title("Color2");
+subplot(1,5,4),funcion_representa_histograma_por_color(Ih3),title("Color3");
+subplot(1,5,5),funcion_representa_histograma_por_color(Ih4),title("Color4");
+hold off
+
+% 15. Realizar un breve informe de conclusiones.
+
+% Se observa que los colores de las imagenes de Color se han aproximado al
+% las del Patron. Permitiendo asi diseñar un clasificador para todas las
+% imagenes y no uno individual.
 
