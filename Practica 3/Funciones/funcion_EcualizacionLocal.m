@@ -9,7 +9,6 @@ function Ieq_local = funcion_EcualizacionLocal(I, NumFilVent, NumColVent, Opcion
 
     % Ampliación de la imagen
     Iamp = padarray(I,[Famp Camp],OpcionRelleno);
-    [Ma,Na] = size(Iamp);
     
     % Imagen de salida
     Ieq_local = zeros(size(I));
