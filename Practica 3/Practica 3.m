@@ -25,8 +25,8 @@ I = imread('P3.tif');
 
 % Visualizamos el histograma y vemos la zona que queremos ampliar
 imhist(I);
-rango = [0,85];
-extension = [0,250];
+rango = [0,50];
+extension = [0,200];
 
 % Obtenemos la primera imagen (Amplitud de Contraste)
 IAC = funcion_amplitud_contraste(I,rango,extension); 
@@ -36,6 +36,10 @@ I2 = funcion_h_cuadratica(I);
 
 % Obtenemos la tercera imagen (Cubica)
 I3 = funcion_h_cubica(I);
+
+% Raiz
+Ir2 = funcion_h_r_cuadrada(I);
+Ir3 = funcion_h_r_cubica(I);
 
 % Obtenemos la cuarta imagen (Sigmoide - VI)
 IS_VI = funcion_sigmoide(I,0.85,1);
@@ -58,6 +62,12 @@ I2_C = funcion_calcula_contraste_histograma(I2);
 I3_B = funcion_calcula_brillo_histograma(I3);
 I3_C = funcion_calcula_contraste_histograma(I3);
 
+Ir2_B = funcion_calcula_brillo_histograma(Ir2);
+Ir2_C = funcion_calcula_contraste_histograma(Ir2);
+
+Ir3_B = funcion_calcula_brillo_histograma(Ir3);
+Ir3_C = funcion_calcula_contraste_histograma(Ir3);
+
 IS_VI_B = funcion_calcula_brillo_histograma(IS_VI);
 IS_VI_C = funcion_calcula_contraste_histograma(IS_VI);
 
@@ -68,18 +78,24 @@ IS_VE_C = funcion_calcula_contraste_histograma(IS_VE);
 
 % Visualización de las imagenes y sus histogramas
 figure, hold on;
-subplot(2,6,1),imshow(I),title("Imagen original");
-subplot(2,6,2),imshow(IAC),title("Amplitud de Contraste");;
-subplot(2,6,3),imshow(I2),title("Funciones Cuadrada");;
-subplot(2,6,4),imshow(I3),title("Funciones Cubica");;
-subplot(2,6,5),imshow(IS_VI),title("Funciones Sigmoide VI");;
-subplot(2,6,6),imshow(IS_VE),title("Funciones Sigmoide VE");;
-subplot(2,6,7),imhist(I),title("B: "+IB+"   C:"+IC);
-subplot(2,6,8),imhist(IAC),title("B: "+IAC_B+"   C:"+IAC_C);
-subplot(2,6,9),imhist(I2),title("B: "+I2_B+"   C:"+I2_C);
-subplot(2,6,10),imhist(I3),title("B: "+I3_B+"   C:"+I3_C);
-subplot(2,6,11),imhist(IS_VI),title("B: "+IS_VI_B+"   C:"+IS_VI_C);
-subplot(2,6,12),imhist(IS_VE),title("B: "+IS_VE_B+"   C:"+IS_VE_C);
+subplot(2,8,1),imshow(I),title("Imagen original");
+subplot(2,8,2),imshow(IAC),title("Amplitud de Contraste");
+subplot(2,8,3),imshow(I2),title("Funciones Cuadrada");
+subplot(2,8,4),imshow(I3),title("Funciones Cubica");
+subplot(2,8,5),imshow(Ir2),title("Funciones R Cuadrada");
+subplot(2,8,6),imshow(Ir3),title("Funciones R Cubica");
+subplot(2,8,7),imshow(IS_VI),title("Funciones Sigmoide VI");
+subplot(2,8,8),imshow(IS_VE),title("Funciones Sigmoide VE");
+
+subplot(2,8,9),imhist(I),title("B: "+IB+"   C:"+IC);
+subplot(2,8,10),imhist(IAC),title("B: "+IAC_B+"   C:"+IAC_C);
+subplot(2,8,11),imhist(I2),title("B: "+I2_B+"   C:"+I2_C);
+subplot(2,8,12),imhist(I3),title("B: "+I3_B+"   C:"+I3_C);
+subplot(2,8,13),imhist(Ir2),title("B: "+Ir2_B+"   C:"+Ir2_C);
+subplot(2,8,14),imhist(Ir3),title("B: "+Ir3_B+"   C:"+Ir3_C);
+subplot(2,8,15),imhist(IS_VI),title("B: "+IS_VI_B+"   C:"+IS_VI_C);
+subplot(2,8,16),imhist(IS_VE),title("B: "+IS_VE_B+"   C:"+IS_VE_C);
+hold off
 
 % Se observa que la mayoria de los pixeles de la imagen tienen niveles
 % bajos de gris. Usando la función de amplitud de contraste, podemos
@@ -191,7 +207,7 @@ hold off;
 
     NumFilVent = 21;
     NumColVent = 21;
-    OpcionRelleno = 'symmetric';
+    OpcionRelleno = 'zeros';
     
     Ieq_local = funcion_EcualizacionLocal(I, NumFilVent, NumColVent, OpcionRelleno);
 
@@ -318,10 +334,10 @@ Ih4 = funcion_ajusta_histograma(I,C4);
 
 figure, hold on
 subplot(2,5,1),imshow(I),title("Patron");
-subplot(2,5,2),imshow(Ih1),"Color1";
-subplot(2,5,3),imshow(Ih2),"Color2";
-subplot(2,5,4),imshow(Ih3),"Color3";
-subplot(2,5,5),imshow(Ih4),"Color4";
+subplot(2,5,2),imshow(Ih1),title("Color1");
+subplot(2,5,3),imshow(Ih2),title("Color2");
+subplot(2,5,4),imshow(Ih3),title("Color3");
+subplot(2,5,5),imshow(Ih4),title("Color4");
 subplot(2,5,6),imhist(I);
 subplot(2,5,7),imhist(Ih1);
 subplot(2,5,8),imhist(Ih2);

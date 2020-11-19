@@ -18,9 +18,9 @@ function IAM=funcion_amplitud_contraste(I,rango,extension)
                 pmax = rango(2);
             else
                 if i > rango(2)
-                    qmin = rango(2)+1;
+                    qmin = extension(2)+1;
                     qmax = 255;
-                    pmin = extension(2)+1;
+                    pmin = rango(2)+1;
                     pmax = 255;
                 end
             end
