@@ -8,7 +8,13 @@ function Ieq_local = funcion_EcualizacionLocal55(I, NumFilVent, NumColVent, Opci
     Camp = (NumColVent - 1)/2;
 
     % Ampliación de la imagen
-    Iamp = padarray(I,[Famp Camp],OpcionRelleno);
+    if strcmp(OpcionRelleno,'zeros')
+        Iamp = zeros(2*Famp+M,2*Camp+N);
+        Iamp(Famp+1:M+Famp,Camp+1:N+Camp) = I;
+        Iamp = uint8(Iamp);
+    else
+        Iamp = padarray(I,[Famp Camp],OpcionRelleno);
+    end
     [Ma,Na] = size(Iamp);
     
     % Imagen de salida

@@ -10,7 +10,7 @@ function Ieq = funcion_EcualizaImagen_2(I)
     for i=1:M
         for j=1:N
         
-            Ieq(i,j) = max(round(g(I(i,j)+1)),0);
+            Ieq(i,j) = max(round(g(double(I(i,j))+1)),0);
         
         end
     end

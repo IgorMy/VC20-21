@@ -1,12 +1,12 @@
 function Ih = funcion_ajusta_histograma(I,C)
-    
+
     % Canales de color de la imagen
     R = I(:,:,1);
     G = I(:,:,2);
     B = I(:,:,3);
     
     % Region de interes de la imagen original
-    RoIo = (R + G + B) >= 150;
+    RoIo = double(R + G + B) >= 150;
     
     
     % Canales de color de C
@@ -15,8 +15,14 @@ function Ih = funcion_ajusta_histograma(I,C)
     BC = C(:,:,3);
     
     % Region de interes de la imagen original
-    RoIC = (RC + GC + BC) >= 150;
+    RoIC = double(RC + GC + BC) >= 150;
     
+    W = 3;
+    RoIC = ordfilt2(RoIC,W*W,ones(W));
+    RoIC = ordfilt2(RoIC,1,ones(W));
+    
+    RoIC = ordfilt2(RoIC,1,ones(W));
+    RoIC = ordfilt2(RoIC,W*W,ones(W));
     
     % Para cada uno de los canales obtenemos T
     [~,T1] = histeq(RC(RoIC),imhist(R(RoIo)));

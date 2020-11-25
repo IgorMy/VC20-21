@@ -101,13 +101,18 @@ hold off
 % bajos de gris. Usando la función de amplitud de contraste, podemos
 % extender este rango mejorando el contraste.
 
-% Por otro lado la funcón cuadrada empeora notablemente la imagen al no
-% conseguir realzar lo suficiente los valores claros
+% Por otro lado las funcónes cuadrática y cúbica empeoran notablemente la 
+% imagen al no conseguir realzar lo suficiente los valores claros
 
-% En cambio, la función cubica consigue realzar mucho los valores claros
-% aumentando significativamente el contraste y el brillo
+% En cambio, las funciónes raiz cuadrada y raiz cubica consiguen desplazar
+% ligermante los valores oscuros, mejorando el contraste en la cuadrada y
+% empeorando en la cubica.
 
-% Por ultimo, la función sigmoide no consigue realzar el histograma
+% Por ultimo, la función sigmoide de valores externos realza el contraste y
+% por contrario, la función de valores intermedios lo empeora.
+
+% Obviamente la mejor función es la de amplitud del contraste porque
+% nosostros mismos decidimos como modificar el contraste.
 
 %% 2. Segunda parte
 clear, clc;
@@ -255,8 +260,8 @@ hold off;
 %     En esta nueva versión, la ecualización se deberá calcular por ventanas 5x5.
 
     OpcionRelleno = 'symmetric';
-    NumFilVent = 21;
-    NumColVent = 21;
+    NumFilVent = 67;
+    NumColVent = 67;
     Ieq5 = funcion_EcualizacionLocal55(I, NumFilVent, NumColVent, OpcionRelleno);
 
     % Datos de la imagen de salida
@@ -301,7 +306,8 @@ hold off;
 % Se observa que las imagenes que ofrecen el mejor contraste son las que se
 % obtienen a partir de la ecualización de la imagen total y la de 9 zonas.
 % Ademas, de los 3 metodos para ecualizar la imagen ,el mas rapido es el
-% 2º, calcular previamente g' y aplicarselo a cada pixel.
+% 2º, calcular previamente g' y aplicarselo a cada pixel en este caso
+% concreto.
 
 %Por contrario, el resto de las funciones alteran significativamente el
 %brillo de la imagen, pero no llegan a modificar en gran medida el
@@ -362,5 +368,5 @@ hold off
 
 % Se observa que los colores de las imagenes de Color se han aproximado al
 % las del Patron. Permitiendo asi diseñar un clasificador para todas las
-% imagenes y no uno individual.
+% imagenes y no unoa uno para cada imagen.
 

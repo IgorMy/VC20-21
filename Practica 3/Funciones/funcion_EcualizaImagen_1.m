@@ -7,7 +7,7 @@ function Ieq = funcion_EcualizaImagen_1(I)
     
         for j=1:N
         
-            Ieq(i,j) = max(round( (256/(M*N)) * H(I(i,j)+1) - 1),0);
+            Ieq(i,j) = max(round( (256/(M*N)) * H(double(I(i,j))+1) - 1),0);
         
         end
     
