@@ -1,0 +1,5 @@
+- Se han eliminado las carpetas de las imágenes de la primera fase que estarían en la carpeta Imágenes.
+- También, se han eliminado las imágenes de la segunda fase, que estarían en la carpeta Ampliación/Imágenes
+- El resultado final toma las imágenes de la carpeta Imágenes 03_Todas, Estas se han podido conservar, 
+por lo que sé podra ejecutar de forma completa
+- Se han eliminado la documentación tanto del trabajo principal como de la ampliación
